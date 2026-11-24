@@ -1,0 +1,78 @@
+{
+  "version": "2.25",
+  "themes": { "mode": ["light", "dark"] },
+  "variables": {
+    "primary": { "type": "color", "value": [
+      { "value": "#7B2FF7", "theme": { "mode": "light" } },
+      { "value": "#A779FF", "theme": { "mode": "dark" } }
+    ] },
+    "card": { "type": "color", "value": [
+      { "value": "#FFFFFF", "theme": { "mode": "light" } },
+      { "value": "#16122B", "theme": { "mode": "dark" } }
+    ] },
+    "border": { "type": "color", "value": "#E4E1EC" },
+    "radius-md": { "type": "number", "value": 8 },
+    "font-sans": { "type": "string", "value": "Inter" }
+  },
+  "children": [
+    {
+      "type": "frame", "id": "lib", "name": "Library", "x": 0, "y": 0, "width": 800, "height": 400,
+      "layout": "none",
+      "children": [
+        {
+          "type": "variants", "id": "btnset", "name": "ui/Button", "x": 0, "y": 0,
+          "reusable": { "variant": ["default", "outline"] },
+          "layout": "vertical", "gap": 12, "padding": 16, "stroke": "$border", "strokeWidth": 1, "strokeDash": [4, 4],
+          "children": [
+            { "type": "frame", "id": "btn1", "name": "Button", "reusable": { "variant": "default" },
+              "height": 36, "fill": "$primary", "cornerRadius": "$radius-md", "gap": 6, "padding": [0, 16],
+              "justifyContent": "center", "alignItems": "center",
+              "children": [
+                { "type": "icon", "id": "ic1", "name": "Icon", "icon": "plus", "library": "lucide", "width": 16, "height": 16, "fill": "#FFFFFF" },
+                { "type": "text", "id": "lbl1", "name": "Label", "content": "Button", "fill": "#FFFFFF", "fontFamily": "$font-sans", "fontSize": 14, "fontWeight": "500" }
+              ] },
+            { "type": "frame", "id": "btn2", "name": "Button", "reusable": { "variant": "outline" },
+              "height": 36, "fill": "$card", "stroke": "$border", "strokeWidth": 1, "cornerRadius": "$radius-md", "gap": 6, "padding": [0, 16],
+              "justifyContent": "center", "alignItems": "center",
+              "children": [
+                { "type": "icon", "id": "ic2", "name": "Icon", "icon": "plus", "library": "lucide", "width": 16, "height": 16, "fill": "$primary" },
+                { "type": "text", "id": "lbl2", "name": "Label", "content": "Button", "fill": "$primary", "fontFamily": "$font-sans", "fontSize": 14, "fontWeight": "500" }
+              ] }
+          ]
+        },
+        { "type": "frame", "id": "card", "name": "Card", "reusable": true, "x": 300, "y": 0, "width": 240,
+          "layout": "vertical", "padding": 16, "gap": 8, "fill": "$card", "cornerRadius": 12,
+          "stroke": "$border", "strokeWidth": { "bottom": 1 },
+          "effect": { "type": "shadow", "shadowType": "outer", "color": "#100D240F", "offset": { "x": 0, "y": 1 }, "blur": 2 },
+          "children": [
+            { "type": "text", "id": "title", "name": "Title", "content": "Title", "fill": "#100D24", "fontFamily": "Inter", "fontSize": 16, "fontWeight": "600" },
+            { "type": "frame", "id": "slot", "name": "Body", "width": "fill_container", "layout": "vertical", "children": [] }
+          ] }
+      ]
+    },
+    {
+      "type": "frame", "id": "screens", "name": "Screens", "x": 0, "y": 600, "layout": "vertical", "gap": 40, "padding": 40,
+      "fill": "#F8F2FA",
+      "children": [
+        { "type": "text", "id": "hdr", "name": "Header", "content": "Screens", "fill": "#100D24", "fontFamily": "Inter", "fontSize": 32 },
+        { "type": "frame", "id": "pageA", "name": "pages/HomePage", "width": 1440, "height": 900, "fill": "$card",
+          "layout": "vertical", "gap": 16, "padding": 24,
+          "children": [
+            { "id": "r1", "type": "ref", "ref": "btnset", "name": "Primary", "variant": { "variant": "outline" },
+              "descendants": { "lbl2": { "content": "Create" }, "ic2": { "icon": "trash-2" } } },
+            { "id": "r2", "type": "ref", "ref": "card", "name": "Card", "width": "fill_container",
+              "descendants": { "slot": { "children": [
+                { "type": "text", "id": "body", "name": "Body text", "content": "Hello", "fill": "#100D24", "fontFamily": "Inter", "fontSize": 14 }
+              ] } } },
+            { "type": "rectangle", "id": "img", "name": "Hero", "width": 200, "height": 100,
+              "fill": { "type": "image", "enabled": true, "url": "hero.png", "mode": "cover" } }
+          ] },
+        { "type": "frame", "id": "pageB", "name": "pages/HomePage — Dark", "width": 1440, "height": 900, "fill": "$card",
+          "theme": { "mode": "dark" }, "layout": "vertical",
+          "children": [
+            { "id": "r3", "type": "ref", "ref": "btnset", "name": "Button" }
+          ] }
+      ]
+    }
+  ]
+}

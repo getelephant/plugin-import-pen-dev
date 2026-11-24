@@ -1,0 +1,36 @@
+[package]
+name = "elephant-import-pen"
+description = "pen.dev importer plugin (ADR-058): converts .pen documents into .ele documents, assets, and a loss report"
+edition = "2024"
+license = "LicenseRef-Proprietary"
+authors = ["LUDERS TECNOLOGIA LTDA"]
+publish = false
+version = "1.0.0-alpha.1"
+rust-version = "1.88"
+
+[lib]
+# rlib for native tests; cdylib is the WebAssembly plugin
+# (`cargo build --target wasm32-unknown-unknown --release`).
+crate-type = ["rlib", "cdylib"]
+
+[dependencies]
+elephant-domain = { git = "https://github.com/rluders/elephant.git", rev = "f9d7cdc5386f32bb6039017a781702b8e5fb38d8" }
+elephant-document = { git = "https://github.com/rluders/elephant.git", rev = "f9d7cdc5386f32bb6039017a781702b8e5fb38d8" }
+elephant-plugin-api = { git = "https://github.com/rluders/elephant.git", rev = "f9d7cdc5386f32bb6039017a781702b8e5fb38d8" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[lints.rust]
+# The WebAssembly ABI exports unmangled functions and reads guest memory;
+# only `src/abi.rs` uses `unsafe`.
+unsafe_code = "deny"
+
+[lints.clippy]
+dbg_macro = "warn"
+todo = "warn"
+
+# On wasm32-unknown-unknown, `uuid` needs a declared randomness source. The
+# importer never draws random IDs (they are derived from the source), so the
+# build uses getrandom's `unsupported` backend (see .cargo/config.toml).
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+uuid = { version = "1", features = ["serde", "v4", "rng-getrandom"] }

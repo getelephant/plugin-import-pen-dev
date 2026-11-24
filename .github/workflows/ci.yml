@@ -1,0 +1,31 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --all --check
+      - run: cargo test --locked
+      - name: Build the module
+        run: cargo build --target wasm32-unknown-unknown --release --locked
+      - name: Package
+        run: |
+          pkg=dist/elephant.import-pen
+          mkdir -p "$pkg"
+          cp elephant.plugin.json data/LUCIDE_LICENSE "$pkg/"
+          cp target/wasm32-unknown-unknown/release/elephant_import_pen.wasm "$pkg/"
+      # Signing: `elephant plugin sign dist/elephant.import-pen --key <seed>` with
+      # the first-party key (see the app repository); not done in pull requests.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: elephant.import-pen
+          path: dist/elephant.import-pen

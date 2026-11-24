@@ -1,0 +1,10 @@
+{
+  "id": "elephant.import-pen",
+  "name": "pen.dev importer",
+  "version": "1.0.0-alpha.1",
+  "apiVersion": 1,
+  "category": "importer",
+  "description": "Converts pen.dev documents (.pen, schema 2.14–2.25) into Elephant design and library files.",
+  "capabilities": ["importer"],
+  "entry": { "wasm": "elephant_import_pen.wasm" }
+}
